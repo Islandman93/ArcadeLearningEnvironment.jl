@@ -291,7 +291,7 @@ getEpisodeFrameNumber(ale::ALEPtr) =
 Returns the size of the RAM.
 """
 getRAMSize(ale::ALEPtr) = ccall((:getRAMSize, libale_c), Cint, (ALEPtr,), ale)
-_getRAM(ale::ALEPtr, ram::Vector{Cuchar}) =
+getRAM!(ale::ALEPtr, ram::Vector{Cuchar}) =
     ccall((:getRAM, libale_c), Cvoid, (ALEPtr, Ptr{Cuchar}), ale, ram)
 
 """
@@ -301,7 +301,7 @@ Returns the snapshot of the RAM as a vector.
 """
 function getRAM(ale::ALEPtr)
     output = Array{UInt8, 1}(undef, getRAMSize(ale))
-    _getRAM(ale, output)
+    getRAM!(ale, output)
     return output
 end
 
